@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Spring Security</title>
+</head>
+<body>
+<main>
+    <h3 th:unless="${user.username.isEmpty()}">
+        <i style="color: red">Chưa đăng nhập</i>
+    </h3>
+    <th:block th:if="${user.username.isEmpty()}">
+        <h3 style="color: blue">Authentication Information</h3>
+        <ul th:object="${#request.userPrincipal}">
+            <li>Username: <b>${user.username}</b></li>
+            <li>Roles: <b>${user.getRoles}</b></li>
+        </ul>
+    </th:block>
+</main>
+</body>
+</html>
