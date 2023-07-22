@@ -1,9 +1,9 @@
 package edu.poly.lab6.controller;
 
+import edu.poly.lab6.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -22,14 +22,14 @@ public class HomeController {
         UserDetails user;
         Authentication authen = SecurityContextHolder.getContext().getAuthentication();
         if (authen == null) {
-            user = User.withUsername("").password("").roles("GUEST").build();
+            user = new User();
             System.out.println("Chưa đăng nhập rồi cha");
         } else {
-            user =  service.loadUserByUsername(authen.getName());
+            user = (User) service.loadUserByUsername(authen.getName());
         }
         model.addAttribute("user", user);
         model.addAttribute("message", "This is home page");
-        return "home/index";
+       return "home/index";
     }
 
     @RequestMapping("/home/about")

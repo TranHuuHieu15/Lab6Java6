@@ -16,6 +16,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import java.util.List;
+
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig {
@@ -47,7 +49,9 @@ public class SpringSecurityConfig {
         return http.csrf().disable().cors().disable()
                 .authorizeHttpRequests() // bắt đầu cấu hình quy tắt cho việc xác thực yêu cầu  http
                 .requestMatchers("/home/index").permitAll() // với endpoint /home/index thì sẽ được cho qua
-                .and().formLogin() // trả về page login nếu chưa authenticate
+                .and()
+                .formLogin() // cấu hình cho form login
+                .defaultSuccessUrl("/home/index")
                 .and().authenticationProvider(getAuthenticationProvider()).build();
     }
 
@@ -57,7 +61,8 @@ public class SpringSecurityConfig {
             @Override
             public void run(String... args) throws Exception {
                 User user = User.builder().username("hieu").password(passwordEncoder().encode("123")).roles(Role.ADMIN).build();
-                repository.save(user);
+                User user1 = User.builder().username("hieu1").password(passwordEncoder().encode("123")).roles(Role.USER).build();
+                repository.saveAll(List.of(user, user1));
             }
         };
     }
