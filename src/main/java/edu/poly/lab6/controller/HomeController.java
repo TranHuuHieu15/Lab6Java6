@@ -19,10 +19,10 @@ public class HomeController {
 
     @GetMapping("/home/index")
     public String index(Model model) {
-
+        UserDetails user;
         Authentication authen = SecurityContextHolder.getContext().getAuthentication();
         if (authen == null) {
-
+            user = User.withUsername("").password("").roles("GUEST").build();
             System.out.println("Chưa đăng nhập rồi cha");
         } else {
             user =  service.loadUserByUsername(authen.getName());
